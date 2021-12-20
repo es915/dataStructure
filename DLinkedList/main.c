@@ -2,13 +2,23 @@
 #include <stdlib.h>
 #include "DLinkedList.h"
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+int WhoIsPrecede(LData d1, LData d2) {
+	
+	if(d1 < d2) {
+		return 0;
+	} else {
+		return 1;
+	}
+	
+}
 
 int main(void) {
 	List list;
 	LData data;
 	
 	ListInit(&list);
+	
+	SetSortRule(&list, WhoIsPrecede);
 	
 	while(1) {
 		printf("자연수 입력 : ");
@@ -21,15 +31,13 @@ int main(void) {
 		LInsert(&list, data);
 	}	
 	
-	if(LFirst(&list, &data)) {
+	if(LFirst(&list, &data)) { 
 		printf("%d ", data);
 	
 		while(LNext(&list, &data)) {
 			printf("%d ", data);
 		}
 	} 
-	
-	
 	
 	return 0;
 }

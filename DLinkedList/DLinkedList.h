@@ -19,6 +19,7 @@ typedef struct _linkedList {
 	Node * cur;
 	Node * before;
 	int numOfData;
+	int (*comp)(LData d1, LData d2);
 	
 } LinkedList;
 
@@ -32,5 +33,7 @@ int LNext(List * plist, LData * pdata);
 
 LData LRemove(List * plist);
 int LCount(List * plist);
+
+void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));
 
 #endif
