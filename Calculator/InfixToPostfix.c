@@ -6,7 +6,7 @@
 #include "InfixToPostfix.h"
 
 int GetOpPrec(char op) {
-	switch(op) { // ìš°ì„ ìˆœìœ„ ë¶€ì—¬ / ìˆ«ìž ë†’ìŒ = ìš°ì„ ìˆœìœ„ ë†’ìŒ 
+	switch(op) { // ¿ì¼±¼øÀ§ ºÎ¿© / ¼ýÀÚ ³ôÀ½ = ¿ì¼±¼øÀ§ ³ôÀ½ 
 		case '*':
 		case '/':
 			return 5;
@@ -19,108 +19,77 @@ int GetOpPrec(char op) {
 	return -1;
 }
 
-// ë¶€ì—¬ëœ ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµí•¨
+// ºÎ¿©µÈ ¿ì¼±¼øÀ§¸¦ ºñ±³ÇÔ
 int WhoPrecOp(char op1, char op2) {
-	int op1Prec = GetOpPrec(op1); // ìµœìƒë‹¨ ìŠ¤íƒ
-	int op2Prec = GetOpPrec(op2); // ë¹„êµí•  ì—°ì‚°ìž
+	int op1Prec = GetOpPrec(op1); // ÃÖ»ó´Ü ½ºÅÃ
+	int op2Prec = GetOpPrec(op2); // ºñ±³ÇÒ ¿¬»êÀÚ
 	
 	if(op1Prec > op2Prec) {
-		return 1; // ìµœìƒë‹¨ ìŠ¤íƒì´ ìš°ì„ ìˆœìœ„ê°€ ë†’ë‹¤ë©´, ìµœìƒë‹¨ ìŠ¤íƒì„ íŒì‹œì¼œ ë°°ì—´ì— ì‚½ìž… ì‹œí‚´
+		return 1; // ÃÖ»ó´Ü ½ºÅÃÀÌ ¿ì¼±¼øÀ§°¡ ³ô´Ù¸é, ÃÖ»ó´Ü ½ºÅÃÀ» ÆË½ÃÄÑ ¹è¿­¿¡ »ðÀÔ ½ÃÅ´
 	} else if(op1Prec < op2Prec) {
-		return -1; // ìµœìƒë‹¨ ìŠ¤íƒì´ ìš°ì„ ìˆœìœ„ê°€ ë‚®ë‹¤ë©´ ë¹„êµí•  ì—°ì‚°ìžë¥¼ ìŠ¤íƒì— ë„£ìŒ
+		return -1; // ÃÖ»ó´Ü ½ºÅÃÀÌ ¿ì¼±¼øÀ§°¡ ³·´Ù¸é ºñ±³ÇÒ ¿¬»êÀÚ¸¦ ½ºÅÃ¿¡ ³ÖÀ½
 	} else {
-		return 0; // ìµœìƒë‹¨ ìŠ¤íƒì´ ë” í¬ë‹¤ë©´, ìµœìƒë‹¨ ìŠ¤íƒì„ íŒì‹œì¼œ ë°°ì—´ì— ì‚½ìž… ì‹œí‚´
+		return 0; // ÃÖ»ó´Ü ½ºÅÃÀÌ ´õ Å©´Ù¸é, ÃÖ»ó´Ü ½ºÅÃÀ» ÆË½ÃÄÑ ¹è¿­¿¡ »ðÀÔ ½ÃÅ´
 	}
 }
 
 void ConvToPostfix(char exp[]) {
-	Stack stack; // ìŠ¤íƒ ìƒì„± 
-	StackInit(&stack); // ìŠ¤íƒ ì´ˆê¸°í™” 
+	Stack stack; // ½ºÅÃ »ý¼º 
+	StackInit(&stack); // ½ºÅÃ ÃÊ±âÈ­ 
 	
-	int expLen = strlen(exp); // expì˜ ê¸€ìžìˆ˜ë¥¼ ì €ìž¥í•¨, ë¬¸ìžì—´ì€ ë§¨ ë’¤ì— 0ì´ ë¶™ì§€ë§Œ strlenì€ 0ì„ ì œì™¸í•¨
-	char * convExp = (char*)malloc(expLen + 1); // expLen + 1 -> strlenì´ ì œì™¸í•œ ë§¨ ë’·ìžë¦¬(0)ë¥¼ í•œì¹¸ ìƒì„±í•´ì¤Œ
+	int expLen = strlen(exp); // expÀÇ ±ÛÀÚ¼ö¸¦ ÀúÀåÇÔ, ¹®ÀÚ¿­Àº ¸Ç µÚ¿¡ 0ÀÌ ºÙÁö¸¸ strlenÀº 0À» Á¦¿ÜÇÔ
+	char * convExp = (char*)malloc(expLen + 1); // expLen + 1 -> strlenÀÌ Á¦¿ÜÇÑ ¸Ç µÞÀÚ¸®(0)¸¦ ÇÑÄ­ »ý¼ºÇØÁÜ
 	
-	// convExpì˜ ê°’ì„ 0ìœ¼ë¡œ ì´ˆê¸°í™”, convExpì˜ ì‚¬ì´ì¦ˆëŠ” ë¬¸ìžì—´ë¡œ ê¸€ìžìˆ˜+1 (0 ìžë¦¬ ë§ˆë ¨)
+	// convExpÀÇ °ªÀ» 0À¸·Î ÃÊ±âÈ­, convExpÀÇ »çÀÌÁî´Â ¹®ÀÚ¿­·Î ±ÛÀÚ¼ö+1 (0 ÀÚ¸® ¸¶·Ã)
 	memset(convExp, 0, sizeof(char) * expLen + 1); 
 	
 	int i, idx=0;
 	char tok, popOp;
 	for(i=0; i<expLen; i++) {
-		tok = exp[i]; // ì²´í¬í•  ë¬¸ìž í•˜ë‚˜ë¥¼ tokì— ë„£ìŒ
+		tok = exp[i]; // Ã¼Å©ÇÒ ¹®ÀÚ ÇÏ³ª¸¦ tok¿¡ ³ÖÀ½
 		
 		// include ctype - isdigit()
-		if(isdigit(tok)) { // ìˆ«ìž = true ë¬¸ìž = false 
-			convExp[idx++] = tok; // tokì´ ìˆ«ìžë©´ ë°°ì—´ì— ë„£ì–´ë¼
-			// tokì´ ë“¤ì–´ê°€ê³  ++ ë¨ 
+		if(isdigit(tok)) { // ¼ýÀÚ = true ¹®ÀÚ = false 
+			convExp[idx++] = tok; // tokÀÌ ¼ýÀÚ¸é ¹è¿­¿¡ ³Ö¾î¶ó
+			// tokÀÌ µé¾î°¡°í ++ µÊ 
 		} else {
 			switch(tok) {
-				case '(' : // ê°€ìž¥ ë‚®ì€ ìš°ì„ ìˆœìœ„ = ë§¨ ë°‘ì— ê¹”ë¦¼
-					SPush(&stack, tok); // stack ì— tokë¥¼ ë„£ìŒ
+				case '(' : // °¡Àå ³·Àº ¿ì¼±¼øÀ§ = ¸Ç ¹Ø¿¡ ±ò¸²
+					SPush(&stack, tok); // stack ¿¡ tok¸¦ ³ÖÀ½
 					break;
 				case ')' :
 					while(1) {
 						popOp = SPop(&stack);
-						if(popOp == '(') { // ì—¬ëŠ” ì†Œê´„í˜¸ë¥¼ ë°œê²¬í• ë•Œê¹Œì§€ íŒ  
-							break; // ì—¬ëŠ” ì†Œê´„í˜¸ ë°œê²¬ì‹œ while ì¢…ë£Œ -> case break
+						if(popOp == '(') { // ¿©´Â ¼Ò°ýÈ£¸¦ ¹ß°ßÇÒ¶§±îÁö ÆË  
+							break; // ¿©´Â ¼Ò°ýÈ£ ¹ß°ß½Ã while Á¾·á -> case break
 						}
-						convExp[idx++] = popOp; // íŒ í•œ ê°’ì„ ë°°ì—´ì— ì‚½ìž… 
+						convExp[idx++] = popOp; // ÆË ÇÑ °ªÀ» ¹è¿­¿¡ »ðÀÔ 
 					} 
 					break;
 				case '+' : 
 				case '-' :
 				case '*' :
 				case '/' :
-					// ë¹„ì–´ìžˆì§€ ì•Šê³  SPeekë¡œ ë½‘ì€ ìµœìƒë‹¨ìŠ¤íƒ(op1)ê³¼ tok(op2)ì„ ë¹„êµ 
-					while(!SIsEmpty(&stack) && WhoPrecOp(SPeek(&stack), tok) >= 0) { // ìžë¦¬ë¥¼ ìž¡ì„ë•Œê¹Œì§€ ì—¬ëŸ¬ë²ˆì— ì²´í¬ë¥¼ í•´ì•¼ í•˜ë¯€ë¡œ while 
-									// 0ë³´ë‹¤ í¬ë‹¤ -> ìš°ì„ ìˆœìœ„ê°€ ìµœìƒë‹¨ ìŠ¤íƒì˜ ìš°ì„ ìˆœìœ„ê°€ ë†’ê±°ë‚˜ ê°™ì€ê²½ìš° ì¼ë•Œ ì‹¤í–‰
-						convExp[idx++] = SPop(&stack); // op1ê°€ ë†’ìœ¼ë‹ˆ ìŠ¤íƒì—ì„œ íŒ -> ë°°ì—´ ì¶”ê°€ 
+					// ºñ¾îÀÖÁö ¾Ê°í SPeek·Î »ÌÀº ÃÖ»ó´Ü½ºÅÃ(op1)°ú tok(op2)À» ºñ±³ 
+					while(!SIsEmpty(&stack) && WhoPrecOp(SPeek(&stack), tok) >= 0) { // ÀÚ¸®¸¦ ÀâÀ»¶§±îÁö ¿©·¯¹ø¿¡ Ã¼Å©¸¦ ÇØ¾ß ÇÏ¹Ç·Î while 
+									// 0º¸´Ù Å©´Ù -> ¿ì¼±¼øÀ§°¡ ÃÖ»ó´Ü ½ºÅÃÀÇ ¿ì¼±¼øÀ§°¡ ³ô°Å³ª °°Àº°æ¿ì ÀÏ¶§ ½ÇÇà
+						convExp[idx++] = SPop(&stack); // op1°¡ ³ôÀ¸´Ï ½ºÅÃ¿¡¼­ ÆË -> ¹è¿­ Ãß°¡ 
 					}
 					
-					SPush(&stack, tok); // tok ìŠ¤íƒ ì¶”ê°€ 
+					SPush(&stack, tok); // tok ½ºÅÃ Ãß°¡ 
 					break;
 			}
 		}
 	}
 	
-	while(!SIsEmpty(&stack)) { // ìš°ì„ ìˆœìœ„ê°€ ë‚®ì•„ ìŠ¤íƒì•ˆì— ë‚¨ì•„ìžˆëŠ” ì—°ì‚°ìžë“¤ì„ íŒ
+	while(!SIsEmpty(&stack)) { // ¿ì¼±¼øÀ§°¡ ³·¾Æ ½ºÅÃ¾È¿¡ ³²¾ÆÀÖ´Â ¿¬»êÀÚµéÀ» ÆË
 		convExp[idx++] = SPop(&stack);
 	}
 	
-	// string + copy = strcpy - ë¬¸ìžì—´ ë³µì‚¬
-	strcpy(exp, convExp); // convExpì˜ ë¬¸ìžì—´ì„ expì— ë³µì‚¬
-	free(convExp); // ë³µì‚¬í–ˆê¸°ì— í•„ìš”ì—†ëŠ” convExp ë©”ëª¨ë¦¬ ì‚­ì œ
+	// string + copy = strcpy - ¹®ÀÚ¿­ º¹»ç
+	strcpy(exp, convExp); // convExpÀÇ ¹®ÀÚ¿­À» exp¿¡ º¹»ç
+	free(convExp); // º¹»çÇß±â¿¡ ÇÊ¿ä¾ø´Â convExp ¸Þ¸ð¸® »èÁ¦
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
