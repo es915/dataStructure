@@ -3,10 +3,10 @@
 #include "ListBaseStack.h"
 
 #define MAZE_SIZE 10
-#define PATH 0 // ì§€ë‚˜ê°ˆ ìˆ˜ ìˆëŠ” ìœ„ì¹˜
-#define WALL 1 // ì§€ë‚˜ê°ˆ ìˆ˜ ì—†ëŠ” ìœ„ì¹˜
-#define VISITED 2 // ì´ë¯¸ ë°©ë¬¸í•œ ìœ„ì¹˜
-#define BACKTRACKED 3 // ë°©ë¬¸í–ˆë‹¤ê°€ ë˜ëŒì•„ ë‚˜ì˜¨ ìœ„ì¹˜
+#define PATH 0 // Áö³ª°¥ ¼ö ÀÖ´Â À§Ä¡
+#define WALL 1 // Áö³ª°¥ ¼ö ¾ø´Â À§Ä¡
+#define VISITED 2 // ÀÌ¹Ì ¹æ¹®ÇÑ À§Ä¡
+#define BACKTRACKED 3 // ¹æ¹®Çß´Ù°¡ µÇµ¹¾Æ ³ª¿Â À§Ä¡
 
 char maze[MAZE_SIZE][MAZE_SIZE]={
 	{1,1,1,1,1,1,1,1,1,1},
@@ -21,7 +21,7 @@ char maze[MAZE_SIZE][MAZE_SIZE]={
 	{1,-1,1,1,1,1,1,1,1,1}
 };
 
-// ë¶ë™ë‚¨ì„œ í•œì¹¸ì”© 
+// ºÏµ¿³²¼­ ÇÑÄ­¾¿ 
 int offset[4][2] = {
 	{-1, 0},
 	{0, 1},
@@ -45,10 +45,10 @@ int movable(Data cur, int dir) {
 	cur.y = cur.y + offset[dir][1];
 	
 	if(cur.x < 0 || cur.y < 0 || cur.x > MAZE_SIZE-1 || cur.y > MAZE_SIZE-1)
-		return 0; // ê°ˆìˆ˜ ì—†ë‹¤ 
+		return 0; // °¥¼ö ¾ø´Ù 
 
 	if(maze[cur.x][cur.y] != WALL && maze[cur.x][cur.y] != VISITED && maze[cur.x][cur.y] != BACKTRACKED)
-		return 1; // ëª»ê°€ëŠ” ìƒí™©ì´ë©´ POPìœ¼ë¡œ ë˜ëŒì•„ê°ˆ ìˆ˜ ìˆë‹¤. 
+		return 1; // ¸ø°¡´Â »óÈ²ÀÌ¸é POPÀ¸·Î µÇµ¹¾Æ°¥ ¼ö ÀÖ´Ù. 
 	else {
 		return 0;
 	}
@@ -64,22 +64,22 @@ Data move(Data cur, int dir) {
 	
 int main(void) {
 
-	Stack stack; // ìŠ¤íƒì´ ë©”ëª¨ë¦¬ ê³µê°„ì— í• ë‹¹ë©ë‹ˆë‹¤. 
-	StackInit(&stack); // ìŠ¤íƒ ì´ˆê¸°í™”
-	Point cur; // ì›€ì§ì¼ ì¢Œí‘œ
+	Stack stack; // ½ºÅÃÀÌ ¸Ş¸ğ¸® °ø°£¿¡ ÇÒ´çµË´Ï´Ù. 
+	StackInit(&stack); // ½ºÅÃ ÃÊ±âÈ­
+	Point cur; // ¿òÁ÷ÀÏ ÁÂÇ¥
 	
 	int i, j, dir;
 	
-	// ì‹œì‘ì 
+	// ½ÃÀÛÁ¡
 	cur.x = 1;
 	cur.y = 0;
 	
-	printf("ì‹œì‘ì : %d, %d\n", cur.x, cur.y);
+	printf("½ÃÀÛÁ¡: %d, %d\n", cur.x, cur.y);
 	SPush(&stack, cur);
 	
 	while(1) {
 		if(maze[cur.x][cur.y] == -1) {
-			printf("íƒˆì¶œ ì„±ê³µ!\n"); // í˜„ì¬ ìœ„ì¹˜ê°€ ì¶œêµ¬ë¼ë©´
+			printf("Å»Ãâ ¼º°ø!\n"); // ÇöÀç À§Ä¡°¡ Ãâ±¸¶ó¸é
 			break;
 		}
 		
@@ -88,16 +88,16 @@ int main(void) {
 		} else {
 			maze[cur.x][cur.y] = VISITED;
 		}
-		// êµì°¨ì ì€ visited ì²˜ë¦¬ 
+		// ±³Â÷Á¡Àº visited Ã³¸® 
 				
 		int fowarded = 0; 
-		// ì›€ì§ì¼ ìˆ˜ ìˆëŠ” ê²½ìš°? 
+		// ¿òÁ÷ÀÏ ¼ö ÀÖ´Â °æ¿ì? 
 		
 		for(dir = 0; dir < 4; dir++) {
 			if(movable(cur, dir)) {
-				// í˜„ì¬ ìœ„ì¹˜ëŠ” ë°©ë¬¸ ì²˜ë¦¬ 
+				// ÇöÀç À§Ä¡´Â ¹æ¹® Ã³¸® 
 				cur = move(cur, dir);
-				SPush(&stack, cur); // ë°ì´í„° ì‚½ì…ì‹œ ë™ì  í• ë‹¹í•˜ë¯€ë¡œ êµ¬ì¡°ì²´ë¡œ ë°ì´í„° ì ‘ê·¼ 
+				SPush(&stack, cur); // µ¥ÀÌÅÍ »ğÀÔ½Ã µ¿Àû ÇÒ´çÇÏ¹Ç·Î ±¸Á¶Ã¼·Î µ¥ÀÌÅÍ Á¢±Ù 
 				fowarded = 1;
 				break;
 			}
@@ -106,7 +106,7 @@ int main(void) {
 		if(fowarded == 0) {
 	
 			if(SIsEmpty(&stack)) {
-				printf("ì¶œêµ¬ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
+				printf("Ãâ±¸°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n");
 				break;
 			}
 			
