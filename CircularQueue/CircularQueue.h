@@ -16,10 +16,15 @@ typedef struct _cQueue {
 
 typedef CQueue Queue;
 
+// 초기화
 void QueueInit(Queue * pq);
+// 비어있는지 체크
 int QIsEmpty(Queue * pq);
+// 데이터 추가
 void Enqueue(Queue * pq, Data data);
+// 데이터 삭제
 Data Dequeue(Queue * pq);
+// 값 뽑기
 Data QPeek(Queue * pq);
 
 #endif
