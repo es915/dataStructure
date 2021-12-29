@@ -21,6 +21,19 @@ char maze[MAZE_SIZE][MAZE_SIZE]={
 	{1,-1,1,1,1,1,1,1,1,1}
 };
 
+void print_maze() {
+	int i, j;
+
+	for(i=0; i<MAZE_SIZE; i++) {
+		for(j=0; j<MAZE_SIZE; j++) {
+			printf("%d ", maze[i][j]);
+		}
+
+		printf("\n");
+	}
+}
+
+
 // 북동남서 한칸씩 
 int offset[4][2] = {
 	{-1, 0},
@@ -28,16 +41,6 @@ int offset[4][2] = {
 	{1, 0},
 	{0, -1}
 };
-
-void print_maze() {
-	int i, j;
-	for(i=0; i<MAZE_SIZE; i++) {
-		for(j=0; j<MAZE_SIZE; j++) {
-			printf("%d ", maze[i][j]);
-		}
-		printf("\n");
-	}
-}
 
 int movable(Data cur, int dir) {
 	
@@ -82,16 +85,13 @@ int main(void) {
 			printf("탈출 성공!\n"); // 현재 위치가 출구라면
 			break;
 		}
-		
+
 		if(maze[cur.x][cur.y] == VISITED || maze[cur.x][cur.y] == BACKTRACKED) {
 			maze[cur.x][cur.y] = BACKTRACKED;
 		} else {
 			maze[cur.x][cur.y] = VISITED;
-		}
-		// 교차점은 visited 처리 
-				
+		}				
 		int fowarded = 0; 
-		// 움직일 수 있는 경우? 
 		
 		for(dir = 0; dir < 4; dir++) {
 			if(movable(cur, dir)) {
@@ -104,16 +104,16 @@ int main(void) {
 		}
 		
 		if(fowarded == 0) {
-	
+			
 			if(SIsEmpty(&stack)) {
-				printf("출구가 존재하지 않습니다.\n");
+				printf("출구가 존재하지 않음 \n");
 				break;
 			}
 			
-			printf(" BackTracked "); 
-			
+			printf(" BACKTRACKED ");
 			maze[cur.x][cur.y] = BACKTRACKED;
 			cur = SPop(&stack);
+			
 		}
 	}
 	

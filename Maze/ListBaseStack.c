@@ -19,6 +19,8 @@ void SPush(Stack * pstack, Data data) {
 	newNode->data = data;
 	
 	newNode->next = pstack->head;
+	
+	printf("[스택 추가 %d, %d] > ", data.x, data.y);
 	pstack->head = newNode;
 }
 
@@ -35,6 +37,9 @@ Data SPop(Stack * pstack) {
 	rnode = pstack->head;
 	
 	pstack->head = rnode->next;
+	
+	printf("[스택 삭제 %d, %d] > ", rIdx.x, rIdx.y);
+	
 	free(rnode);
 	
 	return rIdx;
