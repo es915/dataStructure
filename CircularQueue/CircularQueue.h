@@ -16,15 +16,15 @@ typedef struct _cQueue {
 
 typedef CQueue Queue;
 
-// ì´ˆê¸°í™”
+// ÃÊ±âÈ­
 void QueueInit(Queue * pq);
-// ë¹„ì–´ìˆëŠ”ì§€ ì²´í¬
+// ºñ¾îÀÖ´ÂÁö Ã¼Å©
 int QIsEmpty(Queue * pq);
-// ë°ì´í„° ì¶”ê°€
+// µ¥ÀÌÅÍ Ãß°¡
 void Enqueue(Queue * pq, Data data);
-// ë°ì´í„° ì‚­ì œ
+// µ¥ÀÌÅÍ »èÁ¦
 Data Dequeue(Queue * pq);
-// ê°’ ë½‘ê¸°
+// °ª »Ì±â
 Data QPeek(Queue * pq);
 
 #endif

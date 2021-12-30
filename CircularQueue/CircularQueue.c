@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include "CircularQueue.h"
 
-// Ï¥àÍ∏∞Ìôî
+// √ ±‚»≠
 void QueueInit(Queue * pq) {
-	// Ï¥àÍ∏∞ ÏÉÅÌÉú == Îç∞Ïù¥ÌÑ∞ X -> Ïïû Îí§ = 0
+	// √ ±‚ ªÛ≈¬ == µ•¿Ã≈Õ X -> æ’ µ⁄ = 0
 	pq->front = 0; 
 	pq->rear = 0;
 }
 
-// ÎπÑÏñ¥ÏûàÎäîÏßÄ ÌôïÏù∏
+// ∫ÒæÓ¿÷¥¬¡ˆ »Æ¿Œ
 int QIsEmpty(Queue * pq) {
-	// frontÏôÄ rearÍ∞Ä Í∞ÄÎ•¥ÌÇ§Í≥† ÏûàÎäî Îç∞Ïù¥ÌÑ∞ Ïù∏Îç±Ïä§Í∞Ä Í∞ôÏùå -> ÎπÑÏñ¥ÏûàÏùå
+	// frontøÕ rear∞° ∞°∏£≈∞∞Ì ¿÷¥¬ µ•¿Ã≈Õ ¿Œµ¶Ω∫∞° ∞∞¿Ω -> ∫ÒæÓ¿÷¿Ω
 	if(pq->front == pq->rear) {
 		return TRUE;
 	} else {
@@ -19,70 +19,50 @@ int QIsEmpty(Queue * pq) {
 	}
 }
 
-// Îã§Ïùå Ïù∏Îç±Ïä§ Ï∂îÍ∞Ä
+// ¥Ÿ¿Ω ¿Œµ¶Ω∫ √ﬂ∞°
 int NextPosIdx(int pos) {
-	if(pos == QUE_LEN -1) { // Îì§Ïñ¥Ïò® Í∞íÏù¥ Q Í∏∏Ïù¥Ïùò ÎÅùÏù¥Îã§ -> Îã§Ïùå Ïù∏Îç±Ïä§Î•º Ï∂îÍ∞ÄÌï†Ïàò ÏóÜÏùå
-		return FALSE; 
+	if(pos == QUE_LEN -1) { // µÈæÓø¬ ∞™¿Ã Q ±Ê¿Ã¿« ≥°¿Ã¥Ÿ -> 0π¯¬∞ ¿Œµ¶Ω∫∑Œ µπæ∆ ø¯«¸ ∏ÆΩ∫∆Æ∑Œ µ  
+		return 0; 
 	} else { 
-		return pos+1; // Q Í∏∏Ïù¥Ïùò ÎÅùÏù¥ ÏïÑÎãàÎã§ -> Îã§Ïùå Ïù∏Îç±Ïä§ Ï∂îÍ∞Ä Í∞ÄÎä• -> Îì§Ïñ¥Ïò® Í∞íÏùò Ïù∏Îç±Ïä§Ïóê +1
+		return pos+1; // Q ±Ê¿Ã¿« ≥°¿Ã æ∆¥œ¥Ÿ -> ¥Ÿ¿Ω ¿Œµ¶Ω∫ √ﬂ∞° ∞°¥… -> µÈæÓø¬ ∞™¿« ¿Œµ¶Ω∫ø° +1
 	}
 }
 
-// Îç∞Ïù¥ÌÑ∞ ÏÇΩÏûÖ
+// µ•¿Ã≈Õ ª¿‘
 void Enqueue(Queue * pq, Data data) { 
-	if(NextPosIdx(pq->rear) == pq->front) { // rearÏùò Îã§Ïùå Ïù∏Îç±Ïä§Í∞íÏù¥ frontÎã§ -> Í∞ÄÎìùÏ∞∏ 
+	if(NextPosIdx(pq->rear) == pq->front) { // rear¿« ¥Ÿ¿Ω ¿Œµ¶Ω∫∞™¿Ã front¥Ÿ -> ∞°µÊ¬¸ 
 
 		printf("FULL\n");
 		exit(-1);
 	}
 	
-	pq->rear = NextPosIdx(pq->rear); // rearÏóê rearÏùò Îã§Ïùå Ïù∏Îç±Ïä§Í∞íÏùÑ ÎÑ£Ïùå
-	pq->queArr[pq->rear] = data; // rearÏùò Ïù∏Îç±Ïä§Î•º q Î∞∞Ïó¥Ïóê ÎÑ£Ïùå
+	pq->rear = NextPosIdx(pq->rear); // rearø° rear¿« ¥Ÿ¿Ω ¿Œµ¶Ω∫∞™¿ª ≥÷¿Ω
+	pq->queArr[pq->rear] = data; // rear¿« ¿Œµ¶Ω∫∏¶ q πËø≠ø° ≥÷¿Ω
 }
 
-// Îç∞Ïù¥ÌÑ∞ ÏÇ≠Ï†ú
+// µ•¿Ã≈Õ ªË¡¶
 Data Dequeue(Queue * pq) {
-	if(QIsEmpty(pq)) { // ÎπÑÏñ¥ÏûàÎäîÏßÄ Ï≤¥ÌÅ¨
+	if(QIsEmpty(pq)) { // ∫ÒæÓ¿÷¥¬¡ˆ √º≈©
 		printf("EMPTY\n");
 		exit(-1);
 	}
 	
-	pq->front = NextPosIdx(pq->front); // ÏÑ†ÏûÖÏÑ†Ï∂úÎ°ú Ïù∏Ìï¥ ÌîÑÎ°†Ìä∏Î•º ÏïûÏúºÎ°ú ÎïÖÍπÄ
+	pq->front = NextPosIdx(pq->front); // º±¿‘º±√‚∑Œ ¿Œ«ÿ «¡∑–∆Æ∏¶ æ’¿∏∑Œ ∂•±Ë
 		
-	return pq->queArr[pq->front]; // ÎãπÍ∏¥ ÌîÑÎ°†Ìä∏Ïùò Ïù∏Îç±Ïä§Ïóê Í∞íÏùÑ ÌåùÏãúÌÇ¥
+	return pq->queArr[pq->front]; // ¥Á±‰ «¡∑–∆Æ¿« ¿Œµ¶Ω∫ø° ∞™¿ª ∆ÀΩ√≈¥
 }
 
-// Îç∞Ïù¥ÌÑ∞ ÎΩëÍ∏∞
+// µ•¿Ã≈Õ ªÃ±‚
 Data QPeek(Queue * pq) {
-	if(QIsEmpty(pq)) { // ÎπÑÏñ¥ÏûàÎäîÏßÄ Ï≤¥ÌÅ¨
+	if(QIsEmpty(pq)) { // ∫ÒæÓ¿÷¥¬¡ˆ √º≈©
 		printf("EMPTY\n");
 		exit(-1);
 	}
 	
-	return pq->queArr[NextPosIdx(pq->front)]; // ÌîÑÎ°†Ìä∏Ïóî Îç∞Ïù¥ÌÑ∞Í∞Ä ÏóÜÏùå -> ÌîÑÎ°†Ìä∏ Îã§ÏùåÏùò Ïù∏Îç±Ïä§Í∞íÏùÑ Ï∂úÎ†•Ìï®
+	return pq->queArr[NextPosIdx(pq->front)]; // «¡∑–∆Æø£ µ•¿Ã≈Õ∞° æ¯¿Ω -> «¡∑–∆Æ ¥Ÿ¿Ω¿« ¿Œµ¶Ω∫∞™¿ª √‚∑¬«‘
 }
 
-// Îç∞Ïù¥ÌÑ∞ Í∞ØÏàò ÎΩëÍ∏∞
+// µ•¿Ã≈Õ ∞πºˆ ªÃ±‚
 int getCount(Queue * pq) {
-	return pq->rear - pq->front; // Î†àÏñ¥Ïùò Ïù∏Îç±Ïä§(Íº¨Î¶¨) - ÌîÑÎ°†Ìä∏Ïùò Ïù∏Îç±Ïä§(Î®∏Î¶¨) = Îç∞Ïù¥ÌÑ∞ Í∞ØÏàò
+	return pq->rear - pq->front; // ∑πæÓ¿« ¿Œµ¶Ω∫(≤ø∏Æ) - «¡∑–∆Æ¿« ¿Œµ¶Ω∫(∏”∏Æ) = µ•¿Ã≈Õ ∞πºˆ
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
