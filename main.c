@@ -1,44 +1,24 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-int main(void) {
+// 시작 서브 도착
+// 1. 큰원반을 제외한 n-1개의 원반을 서브로 옮김
+// 2. 큰원반을 시작->도착 이동
+// 3. n-1개의 원반을 서브에서 시작 (시작점->서브)
+// 4. 원반이 하나일때 2번 적용
 
-    srand(time(NULL));
-    // 1970년도 부터 현재까지의 시간을 초단위로 셈
-    // -> 숫자가 달라짐 -> 그에 따른 새로운 난수들이 출력됨
-
-    // 1에서 6까지 난수 출력
-    printf("주사위 결과 : %d\n", rand()%6 + 1);
-    
-    int human, computer, due=0, win=0, lose=0;
-    while(1) {
-        printf("가위 1, 바위 2, 보 3\n");
-        printf("내려고 하는 값 : ");
-        scanf("%d", &human);
-
-        computer = rand()%3 + 1;
-
-        if(human==computer) {
-            printf("Due\n");
-            due++;
-        } else if(human==1&&computer==3) {
-            printf("Win\n");
-            win++;
-        } else if(human==2&&computer==1) {
-            printf("Win\n");
-            win++;
-        } else if(human==3&&computer==2) {
-            printf("Win\n");
-            win++;
-        } else {
-            printf("Lose\n");
-            lose++;
-            break;
-        }
+void hanoi(int n, char start, char sub, char finish){
+    if(n==1) {
+        printf("원반 %d %c에서 %c로 이동1\n", n, start, finish);
+    } else {
+        hanoi(n-1, start, finish, sub);
+        printf("원반 %d %c에서 %c로 이동2\n", n, start, finish);
+        hanoi(n-1, sub, start, finish);
     }
+}
 
-    printf("승 : %d, 무 : %d, 패 : %d\n", win, due, lose);
+int main () {
+
+    hanoi(3, 'A', 'B', 'C');
 
     return 0;
 }
