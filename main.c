@@ -1,24 +1,59 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-// 시작 서브 도착
-// 1. 큰원반을 제외한 n-1개의 원반을 서브로 옮김
-// 2. 큰원반을 시작->도착 이동
-// 3. n-1개의 원반을 서브에서 시작 (시작점->서브)
-// 4. 원반이 하나일때 2번 적용
+int main() {
 
-void hanoi(int n, char start, char sub, char finish){
-    if(n==1) {
-        printf("원반 %d %c에서 %c로 이동1\n", n, start, finish);
-    } else {
-        hanoi(n-1, start, finish, sub);
-        printf("원반 %d %c에서 %c로 이동2\n", n, start, finish);
-        hanoi(n-1, sub, start, finish);
+    int comInput[3];
+    int i, j;
+    
+    srand(time(NULL));
+
+    for(i=0; i<3; i++) {
+        comInput[i] = rand()%9;
+
+        for(j=0; j<i; j++) {
+            if(comInput[j]==comInput[i]) { // 중복됬을 때
+                i--; // 저장된 i를 다시 빼줌 = 원점
+            }
+        }
     }
-}
 
-int main () {
+    int strike;
+    int ball;
+    int n;
+    int input[3];
 
-    hanoi(3, 'A', 'B', 'C');
+    while(1) {
+        n = 0;
+        strike = 0;
+        ball = 0;
+        
+        printf("숫자 3개 입력 : ");
+        scanf("%d %d %d", &input[0], &input[1], &input[2]);
+
+        if((input[0]>=0&&input[0]<=9) || (input[1]>=0&&input[1]<=9) || (input[2]>=0&&input[2]<=9)) {
+            for(i=0; i<3; i++) {
+                for(j=0; j<3; j++) {
+                    if(input[i]==input[j]) {
+                        strike++;
+                    } else {
+                        ball++;
+                    }
+                }
+            }
+        } else {
+            continue; // 처음으로 돌아감
+        }
+
+        n++;
+        printf("현재 시도 횟수 : %d \n", n);
+        printf("%dStrike, %dBall\n", strike, ball);
+
+        if(strike==3) {
+            break;
+        }
+    }
 
     return 0;
 }
