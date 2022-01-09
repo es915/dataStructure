@@ -22,6 +22,17 @@ int Fibo(int n) {
     }
 }
 
+// 하노이탑
+void HanoiTawer(int num, char from, char sub, char to) {
+    if(num==1) {
+        printf("원반 %d를 %c에서 %c로 이동\n", num, from, to);    
+    } else {
+        HanoiTawer(num-1, from, to, sub);
+        printf("원반 %d를 %c에서 %c로 이동\n", num, from, to); 
+        HanoiTawer(num-1, sub, from, to);
+    }
+}   
+
 int main() {
     
     int i;
@@ -29,6 +40,9 @@ int main() {
     for(i=1; i<=15; i++) {
         printf("%d ", Fibo(i));
     }
+    printf("\n");
+
+    HanoiTawer(3, 'A', 'B', 'C');
 
     return 0;
 }
