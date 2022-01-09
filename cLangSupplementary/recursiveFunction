@@ -1,18 +1,34 @@
 #include <stdio.h>
 
+// 재귀 함수
 void Recursive(int num) {
 
-    if(num<=0) {
+    if(num<=0) { // 코드를 끝내는 조건식
         return;
     }
     printf("%d\n", num);
 
-    Recursive(num-1); // 자기자신을 선언함 = 재귀함수
+    Recursive(num-1); // 증감식
+}
+
+// 피보나치 수열
+int Fibo(int n) {
+    if(n==1) {
+        return 0;
+    } else if(n==2) {
+        return 1;
+    } else {
+        return Fibo(n-1)+Fibo(n-2);
+    }
 }
 
 int main() {
-
     
+    int i;
+
+    for(i=1; i<=15; i++) {
+        printf("%d ", Fibo(i));
+    }
 
     return 0;
 }
