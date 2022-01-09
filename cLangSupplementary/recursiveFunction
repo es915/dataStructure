@@ -1,6 +1,18 @@
 #include <stdio.h>
 
+void Recursive(int num) {
+
+    if(num<=0) {
+        return;
+    }
+    printf("%d\n", num);
+
+    Recursive(num-1); // 자기자신을 선언함 = 재귀함수
+}
+
 int main() {
 
-  return 0;
+    
+
+    return 0;
 }
